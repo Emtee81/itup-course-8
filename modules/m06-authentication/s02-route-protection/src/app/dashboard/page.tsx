@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { redirect } from 'next/navigation'
 import { getSession } from '@/lib/auth'
 import SignOutButton from '@/components/SignOutButton'
+import RoleNav from '@/components/RoleNav'
 import styles from '../auth.module.css'
 
 async function DashboardContent() {
@@ -16,6 +17,7 @@ async function DashboardContent() {
       <p>Name: {session.user.name}</p>
       <p>Email: {session.user.email}</p>
       <p>Role: {session.user.role}</p>
+      <RoleNav />
       <SignOutButton />
     </div>
   )

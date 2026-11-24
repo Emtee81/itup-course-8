@@ -1,7 +1,9 @@
 import type { NextAuthOptions } from 'next-auth'
 import { getServerSession } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import { redirect } from 'next/navigation'
 import { verifyUserCredentials } from '@/lib/users'
+import { hasRole, type Role } from '@/lib/roles'
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -42,4 +44,11 @@ export const authOptions: NextAuthOptions = {
 
 export function getSession() {
   return getServerSession(authOptions)
+}
+
+export async function requireRole(role: Role, callbackUrl: string) {
+  const session = await getSession()
+  if (!session) redirect(`/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`)
+  if (!hasRole(session.user.role, role)) redirect('/unauthorized')
+  return session
 }

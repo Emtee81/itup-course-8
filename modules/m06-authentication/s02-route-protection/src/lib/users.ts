@@ -1,6 +1,5 @@
 import bcrypt from 'bcryptjs'
-
-export type Role = 'admin' | 'user'
+import type { Role } from '@/lib/roles'
 
 interface DemoUser {
   id: string
@@ -20,10 +19,17 @@ const users: DemoUser[] = [
   },
   {
     id: '2',
+    name: 'Marta Lopes',
+    email: 'marta@example.com',
+    passwordHash: '$2b$10$/jLpMbdnZ3ItfekxEQsZ0eKP2axkSwoDpD08/tIr.9//AegD9eZyq',
+    role: 'manager',
+  },
+  {
+    id: '3',
     name: 'Rui Costa',
     email: 'rui@example.com',
     passwordHash: '$2b$10$2ejQMSC26rywnV0XtWTRueCUgo.87dakP595G5OYhB7FNSXEya7rK',
-    role: 'user',
+    role: 'employee',
   },
 ]
 
@@ -35,4 +41,8 @@ export async function verifyUserCredentials(email: string, password: string) {
   if (!isValid) return null
 
   return { id: user.id, name: user.name, email: user.email, role: user.role }
+}
+
+export async function listUsers() {
+  return users.map(({ id, name, email, role }) => ({ id, name, email, role }))
 }
